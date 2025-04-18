@@ -225,6 +225,27 @@ class SupabaseAuth with WidgetsBindingObserver {
     } catch (error, stackTrace) {
       _log.warning('Error while getSessionFromUrl', error, stackTrace);
     }
+    //
+    // if (kIsWeb) {
+    //   // Clear the URL to prevent the user from sharing the URL with the token
+    //   // in the browser history
+    //   final originUrl = Uri.parse(window.location.href);
+    //   final framgent = originUrl.fragment;
+    //   final parts = originUrl.fragment.split('&');
+    //   const keysToRemove = [
+    //     'error',
+    //     'error_description',
+    //     'error_code',
+    //     'code',
+    //     'access_token',
+    //     'expires_in',
+    //     'refresh_token',
+    //     'token_type',
+    //     'provider_token',
+    //     'provider_refresh_token',
+    //     'type',
+    //   ];
+    // }
   }
 
   /// Callback when deeplink receiving throw error

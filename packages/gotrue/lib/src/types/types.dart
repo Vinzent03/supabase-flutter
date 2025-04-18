@@ -23,6 +23,7 @@ enum OAuthProvider {
   keycloak,
   linkedin,
   linkedinOidc,
+  nextcloud,
   notion,
   slack,
   slackOidc,

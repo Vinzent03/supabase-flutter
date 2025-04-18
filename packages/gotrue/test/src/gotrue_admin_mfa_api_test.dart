@@ -1,5 +1,4 @@
 import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
-import 'package:dotenv/dotenv.dart';
 import 'package:gotrue/gotrue.dart';
 import 'package:http/http.dart' as http;
 import 'package:test/test.dart';
@@ -7,16 +6,18 @@ import 'package:test/test.dart';
 import '../utils.dart';
 
 void main() {
-  final env = DotEnv();
+  final gotrueUrl = const String.fromEnvironment('GOTRUE_URL',
+      defaultValue: 'http://localhost:9998');
 
-  env.load(); // Load env variables from .env file
-
-  final gotrueUrl = env['GOTRUE_URL'] ?? 'http://localhost:9998';
   final serviceRoleToken = JWT(
     {'role': 'service_role'},
   ).sign(
     SecretKey(
-        env['GOTRUE_JWT_SECRET'] ?? '37c304f8-51aa-419a-a1af-06154e63707a'),
+      const String.fromEnvironment(
+        'GOTRUE_JWT_SECRET',
+        defaultValue: '37c304f8-51aa-419a-a1af-06154e63707a',
+      ),
+    ),
   );
 
   late GoTrueClient client;

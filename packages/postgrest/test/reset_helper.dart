@@ -20,11 +20,19 @@ class ResetHelper {
   }
 
   Future<void> reset([int delay = 0]) async {
-    await _postgrest.from("addresses").delete().neq("username", "dne");
-    await _postgrest.from("reactions").delete().neq("emoji", "dne");
-    await _postgrest.from('messages').delete().neq('message', 'dne');
-    await _postgrest.from('channels').delete().neq('slug', 'dne');
-    await _postgrest.from('users').delete().neq('username', 'dne');
+    try {
+      await _postgrest.from("addresses").delete().neq("username", "dne");
+      await _postgrest.from("reactions").delete().neq("emoji", "dne");
+      await _postgrest
+          .from('messages')
+          .delete()
+          .or('message.neq.dne,message.is.null');
+      await _postgrest.from('channels').delete().neq('slug', 'dne');
+      await _postgrest.from('users').delete().neq('username', 'dne');
+    } on PostgrestException catch (exception) {
+      throw 'Deleting all rows for reset failed. $exception';
+    }
+
     try {
       if (delay > 0) await Future.delayed(Duration(milliseconds: delay));
 

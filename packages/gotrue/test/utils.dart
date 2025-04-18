@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
-import 'package:dotenv/dotenv.dart';
 import 'package:gotrue/gotrue.dart';
 
 /// Email of a user with unverified factor
@@ -39,15 +38,17 @@ String getNewPhone() {
   return '$timestamp';
 }
 
-String getServiceRoleToken(DotEnv env) {
+String getServiceRoleToken() {
   return JWT(
     {
       'role': 'service_role',
     },
-  ).sign(
-    SecretKey(
-        env['GOTRUE_JWT_SECRET'] ?? '37c304f8-51aa-419a-a1af-06154e63707a'),
-  );
+  ).sign(SecretKey(
+    const String.fromEnvironment(
+      'GOTRUE_JWT_SECRET',
+      defaultValue: '37c304f8-51aa-419a-a1af-06154e63707a',
+    ),
+  ));
 }
 
 /// Construct session data for a given expiration date

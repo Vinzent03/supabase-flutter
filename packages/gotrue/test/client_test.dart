@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:dotenv/dotenv.dart';
 import 'package:gotrue/gotrue.dart';
 import 'package:gotrue/src/types/error_code.dart';
 import 'package:http/http.dart' as http;
@@ -12,12 +11,10 @@ import 'custom_http_client.dart';
 import 'utils.dart';
 
 void main() {
-  final env = DotEnv();
-
-  env.load(); // Load env variables from .env file
-
-  final gotrueUrl = env['GOTRUE_URL'] ?? 'http://localhost:9998';
-  final anonToken = env['GOTRUE_TOKEN'] ?? 'anonKey';
+  final gotrueUrl = const String.fromEnvironment('GOTRUE_URL',
+      defaultValue: 'http://localhost:9998');
+  final anonToken =
+      const String.fromEnvironment('GOTRUE_TOKEN', defaultValue: 'anonKey');
   late String newEmail;
   late String newPhone;
 
@@ -50,8 +47,8 @@ void main() {
       adminClient = GoTrueClient(
         url: gotrueUrl,
         headers: {
-          'Authorization': 'Bearer ${getServiceRoleToken(env)}',
-          'apikey': getServiceRoleToken(env),
+          'Authorization': 'Bearer ${getServiceRoleToken()}',
+          'apikey': getServiceRoleToken(),
         },
         asyncStorage: asyncStorage,
       );

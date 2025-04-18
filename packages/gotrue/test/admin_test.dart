@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:dotenv/dotenv.dart';
 import 'package:gotrue/gotrue.dart';
 import 'package:http/http.dart' as http;
 import 'package:test/test.dart';
@@ -8,11 +7,8 @@ import 'package:test/test.dart';
 import 'utils.dart';
 
 void main() {
-  final env = DotEnv();
-  env.load(); // Load env variables from .env file
-
-  final gotrueUrl = env['GOTRUE_URL'] ?? 'http://localhost:9998';
-
+  final gotrueUrl = const String.fromEnvironment('GOTRUE_URL',
+      defaultValue: 'http://localhost:9998');
   late GoTrueClient client;
 
   setUp(() async {
@@ -25,8 +21,8 @@ void main() {
     client = GoTrueClient(
       url: gotrueUrl,
       headers: {
-        'Authorization': 'Bearer ${getServiceRoleToken(env)}',
-        'apikey': getServiceRoleToken(env),
+        'Authorization': 'Bearer ${getServiceRoleToken()}',
+        'apikey': getServiceRoleToken(),
       },
     );
   });

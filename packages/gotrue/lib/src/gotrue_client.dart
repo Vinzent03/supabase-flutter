@@ -1300,9 +1300,8 @@ class GoTrueClient {
       if (error is! AuthRetryableFetchException) {
         _removeSession();
         notifyAllSubscribers(AuthChangeEvent.signedOut);
-      } else {
-        notifyException(error, stack);
       }
+      notifyException(error, stack);
 
       _refreshTokenCompleter?.completeError(error);
 

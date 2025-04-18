@@ -289,6 +289,22 @@ void main() {
       }
     });
 
+    test('update column to null', () async {
+      final before =
+          await postgrest.from('messages').select().eq('id', 1).single();
+      expect(before["message"], isNotEmpty);
+
+      await postgrest
+          .from('messages')
+          .update({'message': null})
+          .eq('id', 1)
+          .select();
+
+      final after =
+          await postgrest.from('messages').select().eq('id', 1).single();
+      expect(after["message"], isNull);
+    });
+
     test('basic delete', () async {
       final res = await postgrest
           .from('messages')
